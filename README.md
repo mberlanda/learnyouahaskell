@@ -9,3 +9,4 @@ In order to get started, you need first to [install Haskell](https://www.haskell
 $ sudo apt-get install haskell-platform
 ```
 
+### Notes
