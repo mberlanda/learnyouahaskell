@@ -10,4 +10,4 @@ $ sudo apt-get install haskell-platform
 ```
 
 ### Notes
-- [02 Starting Out](learnyouahaskell/blob/master/02_starting_out/starting_out.md)
+- [02 Starting Out](02_starting_out/starting_out.md)
