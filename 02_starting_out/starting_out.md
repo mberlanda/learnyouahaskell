@@ -1,7 +1,7 @@
 # 02. Starting Out
 
 #### An intro to lists
-```
+```bash
 ghci> head [5,4,3,2,1]
 ghci> tail [5,4,3,2,1]
 ghci> last [5,4,3,2,1]
@@ -22,7 +22,7 @@ ghci> 4 `elem` [5,4,3,2,1]
 ```
 
 #### Texas ranges
-```
+```bash
 ghci> [1..20]
 ghci> ['K'..'Z']
 ghci> take 10 (cycle [1,2,3])
@@ -31,7 +31,7 @@ ghci> replicate 3 10
 ```
 
 #### I'm a list comprehension
-````
+````bash
 ghci> [x*2 | x <- [1..10]]  
 [2,4,6,8,10,12,14,16,18,20]  
 ghci> [x*2 | x <- [1..10], x*2 >= 12]  
@@ -51,7 +51,7 @@ ghci> [ [ x | x <- xs, even x ] | xs <- xxs]
 ````
 
 #### Tuples
-```
+```bash
 ghci> fst (8,11)  
 8
 ghci> snd (8,11)  

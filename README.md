@@ -10,4 +10,5 @@ $ sudo apt-get install haskell-platform
 ```
 
 ### Notes
-- [02 Starting Out](02_starting_out/starting_out.md)
+- [02. Starting Out](02_starting_out/starting_out.md)
+- [03. Types and Typeclasses](03_types_and_typeclasses/types_and_typeclasses.md)
