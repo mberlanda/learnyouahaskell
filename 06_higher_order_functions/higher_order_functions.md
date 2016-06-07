@@ -34,3 +34,26 @@ ghci> let multWithEighteen = multTwoWithNine 2
 ghci> multWithEighteen 10  
 180
 ```
+
+#### Some higher-orderism is in order
+
+```hs
+applyTwice :: (a -> a) -> a -> a  
+applyTwice f x = f (f x)
+```
+```
+ghci> applyTwice (+3) 10  
+16  
+ghci> applyTwice (++ " HAHA") "HEY"  
+"HEY HAHA HAHA"  
+ghci> applyTwice ("HAHA " ++) "HEY"  
+"HAHA HAHA HEY"  
+ghci> applyTwice (multThree 2 2) 9  
+144  
+ghci> applyTwice (3:) [1]  
+[3,3,1]
+ghci> zipWith' (+) [4,2,5,6] [2,6,2,3]  
+[6,8,7,9]
+ghci> flip' zip [1,2,3,4,5] "hello"  
+[('h',1),('e',2),('l',3),('l',4),('o',5)] 
+```
