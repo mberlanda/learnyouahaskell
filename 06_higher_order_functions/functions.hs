@@ -30,3 +30,27 @@ flip' f = g
 -- because of curried functions, we can write it as follows
 flip'' :: (a -> b -> c) -> b -> a -> c
 flip'' f x y = f y x
+
+-- maps and filters
+
+map' :: (a -> b) -> [a] -> [b]
+map' _ [] = []
+map' f (x:xs) = f x : map' f xs
+
+filter' :: (a -> Bool) -> [a] -> [a]
+filter' _ [] = []
+filter' p (x:xs)
+  | p x       = x : filter' p xs
+  | otherwise = filter' p xs
+
+qsort :: (Ord a) => [a] -> [a]
+qsort [] = []
+qsort (x:xs) = smSorted ++ [x] ++ bgSorted
+  where smSorted = qsort (filter' (<=x) xs)
+        bgSorted = qsort (filter' (>x) xs)
+
+chain :: (Integral a) => a => [a]
+chain 1 = [1]
+chain n
+  | even n = n : chain (n `div` 2)
+  | odd n  = n : chain (n*3 + 1)
