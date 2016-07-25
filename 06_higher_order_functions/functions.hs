@@ -95,4 +95,20 @@ last' = foldl1 (\_ x -> x)
 
 -- How many elements does it take for the sum of the roots of all natural numbers to exceed 1000? 
 sqrtSums :: Int  
-sqrtSums = length (takeWhile (<1000) (scanl1 (+) (map sqrt [1..]))) + 1 
+sqrtSums = length (takeWhile (<1000) (scanl1 (+) (map sqrt [1..]))) + 1
+
+{-
+-- Function application with $
+($) :: (a -> b) -> a -> b  
+f $ x = f x
+
+-- Function composition
+(.) :: (b -> c) -> (a -> b) -> a -> c  
+f . g = \x -> f (g x)
+-}
+
+oddSquareSum :: Integer  
+oddSquareSum = sum (takeWhile (<10000) (filter odd (map (^2) [1..])))
+
+oddSquareSum' :: Integer  
+oddSquareSum' = sum . takeWhile (<10000) . filter odd . map (^2) $ [1..]  
