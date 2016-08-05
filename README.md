@@ -15,3 +15,4 @@ $ sudo apt-get install haskell-platform
 - [04. Syntax in Functions](04_syntax_in_functions/syntax_in_functions.md)
 - [05. Recursion](05_recursion/recursion.md)
 - [06. Higher Order Functions](06_higher_order_functions/higher_order_functions.md)
+- [07. Modules](07_modules/modules.md)
