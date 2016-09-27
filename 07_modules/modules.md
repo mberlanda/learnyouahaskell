@@ -13,3 +13,10 @@ import Data.List hiding (nub) # import all except for nub
 import qualified Data.Map # import fixing conflicts e.g. Prelude.filter Data.Map.filter
 import qualified Data.Map as M
 ```
+
+#### Most used modules
+
+- Data.List
+- Data.Char
+- Data.Map
+- Data.Set
