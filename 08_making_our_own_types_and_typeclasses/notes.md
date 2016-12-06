@@ -129,3 +129,13 @@ True
 *Tree> 2 `treeElem` numsTree 
 False
 ```
+
+#### Typeclasses 102
+The standard prelude define `Eq` as follows:
+```hs
+class Eq a where  
+    (==) :: a -> a -> Bool  
+    (/=) :: a -> a -> Bool  
+    x == y = not (x /= y)  
+    x /= y = not (x == y)
+```
