@@ -90,3 +90,15 @@ ghci> [Thursday .. Sunday]
 ghci> [minBound .. maxBound] :: [Day]  
 [Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday]  
 ```
+
+#### Type synonyms
+```
+Prelude> :l 08_making_our_own_types_and_typeclasses/Locker.hs 
+*Main> :t lockerLookup
+lockerLookup :: Int -> LockerMap -> Either String Code
+*Main> lockerLookup 101 lockers
+Right "JAH3I"
+*Main> lockerLookup 102 lockers
+Left "Locker number 102 doesn't exist!"
+*Main> lockerLookup 109 lockers
+Left "Locker 109 is already taken!"
