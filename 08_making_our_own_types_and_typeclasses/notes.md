@@ -19,3 +19,17 @@ Circle (Point 39.0 44.0) 10.0
 ghci> nudge (baseRect 40 100) 60 23  
 Rectangle (Point 60.0 23.0) (Point 100.0 123.0) 
 ```
+
+#### Record syntax
+```
+data Person = Person String String Int Float String String deriving (Show)
+ghci> let guy = Person "Buddy" "Finklestein" 43 184.2 "526-2928" "Chocolate"  
+ghci> guy  
+Person "Buddy" "Finklestein" 43 184.2 "526-2928" "Chocolate"  
+
+*Main> let p = Person{firstName="Tizio", lastName="Caio", age=28, height=1.90, phoneNumber="", flavor="x"}
+*Main> p
+Person {firstName = "Tizio", lastName = "Caio", age = 28, height = 1.9, phoneNumber = "", flavor = "x"}
+*Main> age(p)
+28
+```
