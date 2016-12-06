@@ -33,3 +33,20 @@ Person {firstName = "Tizio", lastName = "Caio", age = 28, height = 1.9, phoneNum
 *Main> age(p)
 28
 ```
+
+#### Type parameters
+```
+data Maybe a = Nothing | Just a
+ghci> Just "Haha"  
+Just "Haha"  
+ghci> Just 84  
+Just 84  
+ghci> :t Just "Haha"  
+Just "Haha" :: Maybe [Char]  
+ghci> :t Just 84  
+Just 84 :: (Num t) => Maybe t  
+ghci> :t Nothing  
+Nothing :: Maybe a  
+ghci> Just 10 :: Maybe Double  
+Just 10.0
+```
