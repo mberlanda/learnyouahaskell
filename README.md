@@ -17,3 +17,4 @@ $ sudo apt-get install haskell-platform
 - [06. Higher Order Functions](06_higher_order_functions/notes.md)
 - [07. Modules](07_modules/notes.md)
 - [08. Making Our Own Types and Typeclasses](08_making_our_own_types_and_typeclasses/notes.md)
+- [09. Input and Output](09_input_and_output/notes.md)
