@@ -61,7 +61,7 @@ Prelude Control.Monad> forM [1,2,3] print
 2
 3
 [(),(),()]
-ghci> mapM_ print [1,2,3]  
+ghci> mapM_ print [1,2,3]
 1  
 2  
 3
@@ -168,3 +168,36 @@ main = do
 > You can control how exactly buffering is done by using the hSetBuffering function. It takes a handle and a BufferMode and returns an I/O action that sets the buffering. BufferMode is a simple enumeration data type and the possible values it can hold are: NoBuffering, LineBuffering or BlockBuffering (Maybe Int). The Maybe Int is for how big the chunk should be, in bytes. If it's Nothing, then the operating system determines the chunk size. NoBuffering means that it will be read one character at a time. NoBuffering usually sucks as a buffering mode because it has to access the disk so much.
 
 `$ runhaskell deletetodo.hs`
+
+
+#### Command line arguments
+
+> The System.Environment module has two cool I/O actions. One is getArgs, which has a type of getArgs :: IO [String] and is an I/O action that will get the arguments that the program was run with and have as its contained result a list with the arguments. getProgName has a type of getProgName :: IO String and is an I/O action that contains the program name.
+
+```
+$ runhaskell arg-test.hs abc 123 "multi word arg" w00t
+The arguments are:
+abc
+123
+multi word arg
+w00t
+The program name is:
+arg-test.hs
+
+# todo.hs
+$ runhaskell todo.hs view "todo.txt"
+0 - Iron the dishes
+1 - Dust the dog
+2 - Take salad out of the oven
+$ runhaskell todo.hs add "todo.txt" "Another task to add"
+$ runhaskell todo.hs view "todo.txt"
+0 - Iron the dishes
+1 - Dust the dog
+2 - Take salad out of the oven
+3 - Another task to add
+$ runhaskell todo.hs remove "todo.txt" 3
+$ runhaskell todo.hs view "todo.txt"
+0 - Iron the dishes
+1 - Dust the dog
+2 - Take salad out of the oven
+```
