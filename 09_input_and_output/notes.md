@@ -66,3 +66,105 @@ ghci> mapM_ print [1,2,3]
 2  
 3
 ```
+
+#### Files and streams
+
+> `getContents` is an I/O action that reads everything from the standard input until it encounters an end-of-file character. 
+
+```
+$ cat haiku.txt 
+I'm a lil' teapot
+What's with that airplane food, huh?
+It's so small, tasteless
+$ ghc --make capslocker.hs 
+[1 of 1] Compiling Main             ( capslocker.hs, capslocker.o )
+Linking capslocker ...
+$ cat haiku.txt | ./capslocker 
+I'M A LIL' TEAPOT
+WHAT'S WITH THAT AIRPLANE FOOD, HUH?
+IT'S SO SMALL, TASTELESS
+capslocker: <stdin>: hGetLine: end of file
+
+cat shortlines.txt | runhaskell shortlinesonly.hs
+```
+
+> `interact` takes a function of type `String -> String` as a parameter and returns an I/O action that will take some input, run that function on it and then print out the function's result. Let's modify our program to use that.
+
+```hs
+# e.g. shortlinesonly refactoring
+main = interact shortLinesOnly  
+  
+shortLinesOnly :: String -> String  
+shortLinesOnly input =   
+    let allLines = lines input  
+        shortLines = filter (\line -> length line < 10) allLines  
+        result = unlines shortLines  
+    in  result  
+
+main = interact $ unlines . filter ((<10) . length) . lines
+```
+```
+# palindromes.hs
+$ cat words.txt | runhaskell palindromes.hs  
+$ runhaskell girlfriend.hs  
+```
+
+```
+openFile :: FilePath -> IOMode -> IO Handle
+
+type FilePath = String  
+data IOMode = ReadMode | WriteMode | AppendMode | ReadWriteMode  
+
+hGetContents :: Handle -> IO String
+hClose :: Handle -> IO ()
+
+withFile' :: FilePath -> IOMode -> (Handle -> IO a) -> IO a  
+withFile' path mode f = do  
+    handle <- openFile path mode   
+    result <- f handle  
+    hClose handle  
+    return result
+```
+
+`hGetLine`, `hPutStr`, `hPutStrLn`, `hGetChar` ...
+
+```
+readFile :: FilePath -> IO String
+import System.IO  
+  
+main = do  
+    contents <- readFile "girlfriend.txt"  
+    putStr contents  
+```
+
+`writeFile`, `appendFile` ...
+
+```
+$ runhaskell appendtodo.hs  
+Iron the dishes  
+$ runhaskell appendtodo.hs  
+Dust the dog  
+$ runhaskell appendtodo.hs  
+Take salad out of the oven  
+$ cat todo.txt  
+Iron the dishes  
+Dust the dog  
+Take salad out of the oven  
+```
+
+```hs
+main = do   
+    withFile "something.txt" ReadMode (\handle -> do  
+        contents <- hGetContents handle  
+        putStr contents)  
+
+main = do   
+    withFile "something.txt" ReadMode (\handle -> do  
+        hSetBuffering handle $ BlockBuffering (Just 2048)  
+        contents <- hGetContents handle  
+        putStr contents)  
+```
+
+> You can control how exactly buffering is done by using the hSetBuffering function. It takes a handle and a BufferMode and returns an I/O action that sets the buffering. BufferMode is a simple enumeration data type and the possible values it can hold are: NoBuffering, LineBuffering or BlockBuffering (Maybe Int). The Maybe Int is for how big the chunk should be, in bytes. If it's Nothing, then the operating system determines the chunk size. NoBuffering means that it will be read one character at a time. NoBuffering usually sucks as a buffering mode because it has to access the disk so much.
+
+`$ runhaskell deletetodo.hs`
