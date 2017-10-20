@@ -288,5 +288,62 @@ Prelude System.Random> :t randomRs
 randomRs :: (RandomGen g, Random a) => (a, a) -> g -> [a]
 Prelude System.Random> take 10 $ randomRs ('a','z') (mkStdGen 3) :: [Char]
 "xnuhlfwywq"
+```
 
+#### Bytestrings
+
+```
+Prelude> import qualified Data.ByteString.Lazy as B
+Prelude B> import qualified Data.ByteString as S
+Prelude B S> :t B.pack
+B.pack :: [GHC.Word.Word8] -> B.ByteString
+Prelude B S> B.pack [99,97,110]
+"can"
+Prelude B S> B.pack [98..120]
+"bcdefghijklmnopqrstuvwx"
+
+Prelude B S> :t B.unpack
+B.unpack :: B.ByteString -> [GHC.Word.Word8]
+Prelude B S> let x = B.pack [99,97,110]
+Prelude B S> :t x
+x :: B.ByteString
+Prelude B S> B.unpack x
+[99,97,110]
+Prelude B S> x
+"can"
+
+Prelude B S> :t B.fromChunks
+B.fromChunks :: [S.ByteString] -> B.ByteString
+Prelude B S> :t B.toChunks
+B.toChunks :: B.ByteString -> [S.ByteString]
+Prelude B S> B.fromChunks [S.pack [40,41,42], S.pack [43,44,45], S.pack [46,47,48]]
+"()*+,-./0"
+
+-- The bytestring version of : is called cons
+Prelude B S> :t B.cons
+B.cons :: GHC.Word.Word8 -> B.ByteString -> B.ByteString
+Prelude B S> :t B.cons'
+B.cons' :: GHC.Word.Word8 -> B.ByteString -> B.ByteString
+
+Prelude B S> B.cons 85 $ B.pack [80,81,82,84]
+"UPQRT"
+Prelude B S> B.cons' 85 $ B.pack [80,81,82,84]
+"UPQRT"
+
+
+Prelude B S> :t B.empty
+B.empty :: B.ByteString
+
+-- analogous to those in Data.List
+-- head, tail, init, null, length, map, reverse, foldl, foldr, concat, takeWhile, filter
+
+-- analogous to those in System.IO
+Prelude B S System.IO> :t readFile
+readFile :: FilePath -> IO String
+Prelude B S System.IO> :t B.readFile
+B.readFile :: FilePath -> IO B.ByteString
+```
+
+```
+$ runhaskell bytestringcopy.hs haiku.txt haiku.txt.bak
 ```
