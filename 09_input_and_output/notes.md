@@ -347,3 +347,38 @@ B.readFile :: FilePath -> IO B.ByteString
 ```
 $ runhaskell bytestringcopy.hs haiku.txt haiku.txt.bak
 ```
+
+#### Exceptions
+
+Haskell uses algebraic data types such as `Maybe` and `Either` to represent results that may be there or not.
+
+```
+Prelude> div 3 0
+*** Exception: divide by zero
+Prelude> head []
+*** Exception: Prelude.head: empty list
+
+$ runhaskell line_count.hs haiku.txt
+The file has 3 lines!
+$ runhaskell line_count.hs haiku2.txt
+line_count.hs: haiku2.txt: openFile: does not exist (No such file or directory)
+```
+
+Solutions:
+
+- `doesFileExist` function from `System.Directory`
+- `catch` function from `Control.Exception`
+
+IO.Error list:
+
+- `isAlreadyExistsError`
+- `isDoesNotExistError`
+- `isAlreadyInUseError`
+- `isFullError`
+- `isEOFError`
+- `isIllegalOperation`
+- `isPermissionError`
+- `isUserError`
+
+A better error handling should be perfomed avoiding catch:
+<https://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Exception.html#g:3>
