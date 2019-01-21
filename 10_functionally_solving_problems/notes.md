@@ -58,3 +58,9 @@ Infinity
       In an equation for ‘it’: it = solveRPN 3
 
 ```
+
+## Heathrow To London
+
+You can choose between path A and B. When you switch from A to B or B to A we need to
+drive across C as well.
+
