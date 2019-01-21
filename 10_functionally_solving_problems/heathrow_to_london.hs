@@ -18,31 +18,38 @@ type Path = [(Label, Int)]
 
 optimalPath :: RoadSystem -> Path
 optimalPath roadSystem =
-    let (bestAPath, bestBPath) = foldl roadStep ([],[]) roadSystem
-    in  if sum (map snd bestAPath) <= sum (map snd bestBPath)
+    let (bestAPath, bestBPath, sumAPath, sumBPath) = foldl' roadStep ([],[], 0, 0) roadSystem
+    in  if sumAPath <= sumBPath
             then reverse bestAPath
             else reverse bestBPath
 
-roadStep :: (Path, Path) -> Section -> (Path, Path)
-roadStep (pathA, pathB) (Section a b c) =
-    let priceA = sum $ map snd pathA -- pathA is a tuple (Label, Int)
-        priceB = sum $ map snd pathB -- pathB is a tuple (Label, Int)
-        forwardPriceToA = priceA + a
+roadStep :: (Path, Path, Int, Int) -> Section -> (Path, Path, Int, Int)
+roadStep (pathA, pathB, priceA, priceB) (Section a b c) =
+    let forwardPriceToA = priceA + a
         crossPriceToA   = priceB + b + c
         forwardPriceToB = priceB + b
         crossPriceToB   = priceB + a + c
-        newPathToA = if forwardPriceToA <= crossPriceToA
-                        then (A,a):pathA
-                        else (C,c):(B,b):pathB
-        newPathToB = if forwardPriceToB <= crossPriceToB
-                        then (B,b):pathB
-                        else (C,c):(A,a):pathA
-    in  (newPathToA, newPathToB)
+        (newPathToA, newPriceA) = if forwardPriceToA <= crossPriceToA
+                                    then ((A,a):pathA, forwardPriceToA)
+                                    else ((C,c):(B,b):pathB, crossPriceToB)
+        (newPathToB, newPriceB) = if forwardPriceToB <= crossPriceToB
+                                  then ((B,b):pathB, forwardPriceToB)
+                                  else ((C,c):(A,a):pathA, crossPriceToA)
+    in  (newPathToA, newPathToB, newPriceA, newPriceB)
 
 groupsOf :: Int -> [a] -> [[a]]
 groupsOf 0 _ = undefined
 groupsOf _ [] = []
 groupsOf n xs = take n xs : groupsOf n (drop n xs)
+
+{-
+  -- I did not manage to write a working generator of [Section]
+  import Data.Random -- stack install random-fu
+  import System.Random
+
+  randomRoadSystem :: StdGen -> Int -> RoadSystem -> RoadSystem
+  randomRoadSystem g n xs = fst $ sampleState (sample n xs) g
+-}
 
 main = do
     contents <- getContents

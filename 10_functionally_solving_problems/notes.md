@@ -64,3 +64,8 @@ Infinity
 You can choose between path A and B. When you switch from A to B or B to A we need to
 drive across C as well.
 
+```
+$ cat paths.txt | stack runhaskell heathrow_to_london.hs
+The best path to take is: BCACBBC
+The price is: 75
+```
