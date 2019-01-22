@@ -19,3 +19,4 @@ $ sudo apt-get install haskell-platform
 - [08. Making Our Own Types and Typeclasses](08_making_our_own_types_and_typeclasses/notes.md)
 - [09. Input and Output](09_input_and_output/notes.md)
 - [10. Functionally Solving Problems](10_functionally_solving_problems/notes.md)
+- [11. Functors, Applicative Functors and Monoids](11_functors_applicative_functors_and_monoids/notes.md)
