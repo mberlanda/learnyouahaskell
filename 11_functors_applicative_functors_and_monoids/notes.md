@@ -244,3 +244,52 @@ Summary of applicative functor's laws:
 * `pure (.) <*> u <*> v <*> w = u <*> (v <*> w)`
 * `pure f <*> pure x = pure (f x)`
 * `u <*> pure y = pure ($ y) <*> u`
+
+## The newtype keyword
+
+```hs
+Prelude> data ZipList a = ZipList [a]
+Prelude> :t ZipList
+ZipList :: [a] -> ZipList a
+Prelude> data ZipList a = ZipList { getZipList :: [a] }
+Prelude> :t ZipList
+ZipList :: [a] -> ZipList a
+Prelude> :t getZipList
+getZipList :: ZipList a -> [a]
+```
+
+```hs
+data CoolBool = CoolBool { getCoolBool :: Bool }
+helloMe :: CoolBool -> String
+helloMe (CoolBool _) = "hello"
+{-
+Prelude> helloMe undefined
+"*** Exception: Prelude."
+-}
+newtype CoolBool = CoolBool { getCoolBool :: Bool }
+-- helloMe undefined
+-- "hello"
+```
+
+type vs. newtype vs. data :
+
+* `type` keyword is for making type synonyms
+```hs
+type IntList = [Int]
+-- ([1,2,3] :: IntList) ++ ([1,2,3] :: [Int])
+-- [1,2,3,1,2,3]
+```
+* `newtype` keyword is for taking existing types and wrapping them in new types
+```hs
+newtype CharList = CharList { getCharList :: [Char] }
+{-
+Prelude> getCharList $ CharList "abc"
+"abc"
+Prelude> getCharList $ ( CharList "abc" ++ Charlist "def")
+
+<interactive>:24:35: error:
+    • Data constructor not in scope: Charlist :: [Char] -> [a0]
+    • Perhaps you meant ‘CharList’ (line 20)
+-}
+```
+* `data` keyword is for making new data types
