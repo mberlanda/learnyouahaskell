@@ -293,3 +293,48 @@ Prelude> getCharList $ ( CharList "abc" ++ Charlist "def")
 -}
 ```
 * `data` keyword is for making new data types
+
+## Monoids
+
+Monoids laws:
+
+```hs
+mempty `mappend` x = x
+x `mappend` mempty = x
+(x `mappend` y) `mappend` z = x `mappend` (y `mappend` z)
+```
+
+Ordering examples:
+
+```hs
+lengthCompare :: String -> String -> Ordering
+lengthCompare x y = let a = length x `compare` length y
+                        b = x `compare` y
+                    in  if a == EQ then b else a
+
+import Data.Monoid
+
+lengthCompare :: String -> String -> Ordering
+lengthCompare x y = (length x `compare` length y) `mappend` (x `compare` y)
+
+import Data.Monoid
+
+lengthCompare :: String -> String -> Ordering
+lengthCompare x y = (length x `compare` length y) `mappend`
+                    (vowels x `compare` vowels y) `mappend`
+                    (x `compare` y)
+    where vowels = length . filter (`elem` "aeiou")
+```
+
+Foldable examples:
+
+```
+*Main> testTree
+Node 5 (Node 3 (Node 1 Empty Empty) (Node 6 Empty Empty)) (Node 9 (Node 8 Empty Empty) (Node 10 Empty Empty))
+*Main> F.foldl (+) 0 testTree
+42
+*Main> F.foldl (*) 1 testTree
+64800
+*Main>  F.foldMap (\x -> [x]) testTree
+[1,3,6,5,8,9,10]
+```
