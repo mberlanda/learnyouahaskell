@@ -30,3 +30,20 @@ Just 4
 *Main> Nothing >>= \x -> Just (x+1)
 Nothing
 ```
+
+## The Monad type class
+
+```hs
+Prelude> return "WHAT"
+"WHAT"
+Prelude> return "WHAT" :: Maybe String
+Just "WHAT"
+Prelude> Just 9 >>= \x -> return (x*10)
+Just 90
+Prelude> Nothing >>= \x -> return (x*10)
+Nothing
+Prelude> Just 9 >> Just "a"
+Just "a"
+Prelude> Just 9 >> Just 5
+Just 5
+```
