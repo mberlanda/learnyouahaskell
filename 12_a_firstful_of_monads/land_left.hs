@@ -38,3 +38,30 @@ routine = case mlandLeft 1 (0,0) of
 
 mroutine :: Maybe Pole
 mroutine = return (0,0) >>= mlandLeft 1 >>= mlandRight 4 >>= mlandLeft 2 >>= mlandLeft 1
+
+-- do notation
+doroutine :: Maybe Pole
+doroutine = do
+    start <- return (0,0)
+    first <- mlandLeft 2 start
+    second <- mlandRight 2 first
+    mlandLeft 1 second
+
+nroutine :: Maybe Pole
+nroutine =
+    case Just (0,0) of
+        Nothing -> Nothing
+        Just start -> case mlandLeft 2 start of
+            Nothing -> Nothing
+            Just first -> case mlandRight 2 first of
+                Nothing -> Nothing
+                Just second -> mlandLeft 1 second
+
+
+ndoroutine :: Maybe Pole
+ndoroutine = do
+    start <- return (0,0)
+    first <- mlandLeft 2 start
+    Nothing
+    second <- mlandRight 2 first
+    mlandLeft 1 second

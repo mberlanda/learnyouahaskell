@@ -90,3 +90,22 @@ Nothing
 *Main> return (0,0) >>= mlandLeft 2 >> Just (4, 3)  >>= mlandLeft (1)
 Just (5,3)
 ```
+
+## do notation
+
+```hs
+let x = 3; y = "!" in show x ++ y
+-- handle failure context
+Just 3 >>= (\x -> Just "!" >>= (\y -> Just (show x ++ y)))
+
+foo :: Maybe String
+foo = Just 3   >>= (\x ->
+      Just "!" >>= (\y ->
+      Just (show x ++ y)))
+
+foo :: Maybe String
+foo = do
+    x <- Just 3
+    y <- Just "!"
+    Just (show x ++ y)
+```
