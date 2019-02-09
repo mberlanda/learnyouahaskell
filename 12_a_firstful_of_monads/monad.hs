@@ -16,3 +16,8 @@ module T where
       Nothing >>= f = Nothing -- same as applyMaybe
       Just x >>= f  = f x
       fail _ = Nothing
+
+  instance T.Monad [] where
+    return x = [x]
+    xs >>= f = concat (map f xs)
+    fail _ = []

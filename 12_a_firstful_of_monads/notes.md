@@ -109,3 +109,55 @@ foo = do
     y <- Just "!"
     Just (show x ++ y)
 ```
+
+## The list monad
+
+```hs
+Prelude> (*) <$> [1,2,3] <*> [10,100,1000]
+[10,100,1000,20,200,2000,30,300,3000]
+Prelude> [3,4,0,5] >>= \x -> [x,-x]
+[3,-3,4,-4,0,0,5,-5]
+
+Prelude> [1,2,3] >>= \x -> []
+[]
+-- Just like with Maybe values, we can chain several lists with >>=, propagating the non-determinism:
+Prelude> [1,2] >>= \n -> ['a','b']
+"abab"
+Prelude> [1,2] >>= \n -> ['a','b'] >>= \ch -> return (n,ch)
+[(1,'a'),(1,'b'),(2,'a'),(2,'b')]
+-- same with do notation
+listOfTuples :: [(Int,Char)]
+listOfTuples = do
+    n <- [1,2]
+    ch <- ['a','b']
+    return (n,ch)
+-- list comprehension notation
+Prelude> [ (n,ch) | n <- [1,2], ch <- ['a','b'] ]
+[(1,'a'),(1,'b'),(2,'a'),(2,'b')]
+
+Prelude> [ x | x <- [1..50], '7' `elem` show x ]
+[7,17,27,37,47]
+```
+
+`MonadPlus` behaves like Monoid for Functors.
+```hs
+Prelude> import Control.Monad
+Prelude Control.Monad> :t guard
+guard :: GHC.Base.Alternative f => Bool -> f ()
+Prelude Control.Monad> guard (5 > 2) :: Maybe ()
+Just ()
+Prelude Control.Monad> [1..50] >>= (\x -> guard ('7' `elem` show x) >> return x)
+[7,17,27,37,47]
+Prelude Control.Monad> guard (5 > 2) >> return "cool" :: [String]
+["cool"]
+Prelude Control.Monad> guard (1 > 2) >> return "cool" :: [String]
+[]
+
+sevensOnly :: [Int]
+sevensOnly = do
+    x <- [1..50]
+    guard ('7' `elem` show x)
+    return x
+[ x | x <- [1..50], '7' `elem` show x ]
+-- list comprehension behaves like guard
+```
