@@ -161,3 +161,39 @@ sevensOnly = do
 [ x | x <- [1..50], '7' `elem` show x ]
 -- list comprehension behaves like guard
 ```
+
+## Monad laws
+
+### Left identity
+
+`return x >>= f` is equivalent to `f x`
+
+```hs
+return 3 >>= (\x -> Just (x+100000))
+(\x -> Just (x+100000)) 3
+return "WoM" >>= (\x -> [x,x,x])
+(\x -> [x,x,x]) "WoM"
+```
+
+### Right identity
+
+`m >>= return` is equivalent to `m`
+
+```hs
+[1,2,3,4] >>= (\x -> return x)
+-- where the definition for lists is
+xs >>= f = concat (map f xs)
+```
+
+### Associativity
+
+`(m >>= f) >>= g` is equivalent to `m >>= (\x -> f x >>= g)`
+
+```hs
+-- function composition
+(.) :: (b -> c) -> (a -> b) -> (a -> c)
+f . g = (\x -> f (g x))
+
+(<=<) :: (Monad m) => (b -> m c) -> (a -> m b) -> (a -> m c)
+f <=< g = (\x -> g x >>= f)
+```
