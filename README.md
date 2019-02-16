@@ -21,3 +21,4 @@ $ sudo apt-get install haskell-platform
 - [10. Functionally Solving Problems](10_functionally_solving_problems/notes.md)
 - [11. Functors, Applicative Functors and Monoids](11_functors_applicative_functors_and_monoids/notes.md)
 - [12. A Firstful of Monads](12_a_firstful_of_monads/notes.md)
+- [13. For a Few Monads More](13_for_a_few_monads_more/notes.md)
