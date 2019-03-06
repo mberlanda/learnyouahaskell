@@ -66,3 +66,20 @@ Finished with 2
 DList> mapM_ putStrLn . fromDiffList . snd . runWriter $ finalCountDown 500
 DList> mapM_ putStrLn . snd . runWriter $ reverseFinalCountDown 500
 ```
+
+## Reader? Ugh, not this joke again.
+
+```hs
+-- functors
+let f = (*5)
+let g = (+3)
+(fmap f g) 8
+-- applicative functors
+(+) <$> (*2) <*> (+10) $ 8
+```
+
+```hs
+instance Monad ((->) r) where
+    return x = \_ -> x
+    h >>= f = \w -> f (h w) w
+```
