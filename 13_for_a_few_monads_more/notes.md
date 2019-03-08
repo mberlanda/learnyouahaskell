@@ -83,3 +83,68 @@ instance Monad ((->) r) where
     return x = \_ -> x
     h >>= f = \w -> f (h w) w
 ```
+
+## Tasteful stateful computations
+
+```hs
+*Main System.Random> threeCoins $ mkStdGen 1000
+
+-- Stacks and Stones
+*Main System.Random> stackManip [5,8,2,1]
+(5,[8,2,1])
+*Main System.Random> stackManip' [5,8,2,1]
+(5,[8,2,1])
+```
+
+`Control.Monad.State` is defined as:
+
+```hs
+newtype State s a = State { runState :: s -> (a,s) }
+
+instance Monad (State s) where
+    return x = State $ \s -> (x,s)
+    (State h) >>= f = State $ \s -> let (a, newState) = h s
+                                        (State g) = f a
+                                    in  g newState
+
+-- book definition
+get :: MonadState s m => m s
+get = State $ \s -> (s,s)
+
+put :: MonadState s m => s -> m ()
+put newState = State $ \s -> ((),newState)
+```
+
+```hs
+-- https://hackage.haskell.org/package/mtl-2.2.1/docs/src/Control.Monad.State.Class.html#state
+-- | Minimal definition is either both of @get@ and @put@ or just @state@
+class Monad m => MonadState s m | m -> s where
+    -- | Return the state from the internals of the monad.
+    get :: m s
+    get = state (\s -> (s, s))
+
+    -- | Replace the state inside the monad.
+    put :: s -> m ()
+    put s = state (\_ -> ((), s))
+
+    -- | Embed a simple state action into the monad.
+    state :: (s -> (a, s)) -> m a
+    state f = do
+      s <- get
+      let ~(a, s') = f s
+      put s'
+      return a
+#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 707
+    {-# MINIMAL state | get, put #-}
+#endif
+```
+
+```hs
+-- stateful sstack.hs
+*Main System.Random> runState stackManip [5,8,2,1]
+(5,[8,2,1])
+-- stateful scoin.hs
+Prelude> :l 13_for_a_few_monads_more/scoins.hs
+*Scoin> runState threeCoins (mkStdGen 33)
+((True,False,True),680029187 2103410263)
+```
