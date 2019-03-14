@@ -148,3 +148,41 @@ Prelude> :l 13_for_a_few_monads_more/scoins.hs
 *Scoin> runState threeCoins (mkStdGen 33)
 ((True,False,True),680029187 2103410263)
 ```
+
+## Error error on the wall
+
+The `Control.Monad.Error` implementation looks like:
+
+```hs
+instance (Error e) => Monad (Either e) where
+    return x = Right x
+    Right x >>= f = f x
+    Left err >>= f = Left err
+    fail msg = Left (strMsg msg)
+```
+
+The module is deprecated:
+
+```
+Prelude Control.Monad> import Control.Monad.Error
+
+<interactive>:1:1: warning: [-Wdeprecations]
+    Module ‘Control.Monad.Error’ is deprecated:
+      Use "Control.Monad.Except" instead
+```
+
+<https://hackage.haskell.org/package/mtl-2.2.1/docs/Control-Monad-Except.html>
+does not implement `strMsg` used in the examples.
+
+Haskell implementation seems to have changed a lot since the book was written:
+
+```hs
+Prelude Control.Monad.Except>  Left "boom" >>= \x -> return (x+1)
+Left "boom"
+Prelude Control.Monad.Except> Right 100 >>= \x -> Left "no way!"
+Left "no way!"
+Prelude Control.Monad.Except> Right 3 >>= \x -> return (x + 100)
+Right 103
+Prelude Control.Monad.Except> Right 3 >>= \x -> return (x + 100) :: Either String Int
+Right 103
+```
